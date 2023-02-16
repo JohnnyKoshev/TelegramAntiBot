@@ -15,7 +15,6 @@ import {
     updateChatsData,
     verify, writeFile
 } from "./lib";
-import {token} from "./env";
 import * as fs from "fs";
 
 class AntiBot {
@@ -118,6 +117,3 @@ class AntiBot {
 
 const antiBot: AntiBot = new AntiBot();
 antiBot.startBot();
-// bot.command('check', async (ctx) => {
-//     await ctx.reply("I am in the working state!");
-// })
