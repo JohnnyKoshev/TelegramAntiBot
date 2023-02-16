@@ -1,0 +1,21 @@
+{
+  "name": "absolute-telegram-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "flatted": "^3.2.7",
+    "telegraf": "^4.11.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0"
+  }
+}
