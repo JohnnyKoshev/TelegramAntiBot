@@ -1,8 +1,8 @@
 export interface NewUserData {
     id: number
-    name: string
-    timeout: NodeJS.Timeout
-    identifier: string
+    first_name: string
+    timeout?: NodeJS.Timeout
+    identifier?: string
 }
 
 export interface NewChatData {
