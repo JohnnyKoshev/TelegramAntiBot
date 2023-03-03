@@ -15,7 +15,7 @@ import {
     readFile,
     updateChatsData,
     verify,
-    writeFile, getUserStatus
+    writeFile, getUserStatus, initializeNewChat
 } from "./lib";
 import * as fs from "fs";
 
@@ -32,7 +32,8 @@ class AntiBot {
     async run() {
         if (fs.existsSync('database/chats.json'))
             readFile().then((val) => {
-                this.newChatsData = val;
+                if(!!val) this.newChatsData = val;
+                this.newChatsData = [];
             })
         else
             writeFile(this.newChatsData).then();
@@ -63,19 +64,15 @@ class AntiBot {
         return;
     }
 
-    private async initializeNewChat(ctx: Context) {
-        addChat(this.newChatsData, ctx.chat!.id, 0);
-        await writeFile(this.newChatsData);
-        return findChat(ctx.chat!.id, this.newChatsData);
-    }
-
     private handleUserJoin() {
         this.bot.on(message('new_chat_members'),
             async (ctx) => {
                 const botStatus = await getUserStatus(ctx, ctx.botInfo.id);
-                if (ctx.chat.id === -1001751824071 && botStatus === "administrator") {
+                if ( ctx.chat.id === -1001751824071 && botStatus === "administrator") {
                     let newChatData = findChat(ctx.chat.id, this.newChatsData);
-                    if (!newChatData) newChatData = await this.initializeNewChat(ctx);
+                    if (!newChatData) {
+                        newChatData = await initializeNewChat(ctx, this.newChatsData);
+                    }
                     if (ctx.message.message_id > newChatData!.latestMessageId) {
                         for (const newUser of ctx.update.message.new_chat_members) {
                             await this.sendNotification(ctx, newUser, newChatData);

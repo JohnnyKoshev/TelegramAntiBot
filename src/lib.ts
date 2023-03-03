@@ -67,6 +67,12 @@ export async function initializeData(chatsData: NewChatData[], readFunc: () => P
     chatsData = await readFunc();
 }
 
+export async function initializeNewChat(ctx: Context, newChatsData: NewChatData[] | null) {
+    addChat(newChatsData, ctx.chat!.id, 0);
+    await writeFile(newChatsData);
+    return findChat(ctx.chat!.id, newChatsData);
+}
+
 export async function getUserStatus(ctx: Context, userId: number) {
     const userInfo = await ctx.getChatMember(userId);
     return userInfo.status;
