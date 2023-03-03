@@ -45,7 +45,7 @@ class AntiBot {
     private async showAlert(ctx: Context): Promise<void> {
         await ctx.answerCbQuery(
             "You are not allowed to press this button!",
-            {show_alert: true, cache_time: 1800}
+            {show_alert: true, cache_time: 36000}
         );
     }
 

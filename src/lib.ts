@@ -29,7 +29,7 @@ export function updateChatsData(chatsData: NewChatData[] | null, chatData: NewCh
 }
 
 export async function sendWelcome(ctx: Context, user: User) {
-    return await ctx.replyWithMarkdownV2(`Welcome to the chat, [${user.first_name}](tg://user?id=${user.id}) \\! It is an anti\\-bot system\\. Please, verify yourself by pressing the button during *1 minute*, otherwise you will be *kicked*\\.`,
+    return await ctx.replyWithMarkdownV2(`Welcome to the chat, [\\${user.first_name}](tg://user?id=${user.id}) \\! It is an anti\\-bot system\\. Please, verify yourself by pressing the button during *1 minute*, otherwise you will be *kicked*\\.`,
         Markup.inlineKeyboard([
             Markup.button.callback('Verify', "verification")
         ]));
@@ -47,12 +47,12 @@ export async function processBan(user: User, chatData: NewChatData, ctx: Context
     const userStatus = await getUserStatus(ctx, user.id);
     chatData.newUsers = chatData.newUsers.filter((user) => user.id !== user.id);
     if (userStatus === "member") await ctx.banChatMember(user.id);
-    await ctx.replyWithMarkdownV2(`[${user.first_name}](tg://user?id=${user.id}) hasn't been verified\\!`);
+    await ctx.replyWithMarkdownV2(`[\\${user.first_name}](tg://user?id=${user.id}) hasn't been verified\\!`);
 }
 
 export async function verify(ctx: Context, userData: NewUserData) {
     clearTimeout(userData.timeout);
-    await ctx.replyWithMarkdownV2(`[${userData.first_name}](tg://user?id=${userData.id}) has been verified\\!`);
+    await ctx.replyWithMarkdownV2(`[\\${userData.first_name}](tg://user?id=${userData.id}) has been verified\\!`);
 }
 
 export async function writeFile(chatsData: NewChatData[] | null) {
