@@ -73,8 +73,7 @@ class AntiBot {
         this.bot.on(message('new_chat_members'),
             async (ctx) => {
                 const botStatus = await getUserStatus(ctx, ctx.botInfo.id);
-                if (ctx.chat.id === -1001751824071
-                    && botStatus === "administrator") {
+                if (ctx.chat.id === -1001751824071 && botStatus === "administrator") {
                     let newChatData = findChat(ctx.chat.id, this.newChatsData);
                     if (!newChatData) newChatData = await this.initializeNewChat(ctx);
                     if (ctx.message.message_id > newChatData!.latestMessageId) {
@@ -92,11 +91,16 @@ class AntiBot {
         if (!newUser.is_bot && userStatus !== "administrator" && userStatus === "member") {
             const welcomeMsg = await sendWelcome(ctx, newUser);
             const timeout = setTimeout(async () => {
-                await processBan(newUser, newChatData!, ctx);
-                updateChatsData(this.newChatsData, newChatData);
-                await writeFile(this.newChatsData);
-                if (!!welcomeMsg) await ctx.deleteMessage(welcomeMsg.message_id);
-            }, 60000);
+             try {
+                 if (!!welcomeMsg) await ctx.deleteMessage(welcomeMsg.message_id);
+                 await processBan(newUser, newChatData!, ctx);
+                 updateChatsData(this.newChatsData, newChatData);
+                 await writeFile(this.newChatsData);
+             }
+             catch (TelegramError){
+                 return;
+             }
+            }, 30000);
             addUser(newUser, newChatData, timeout);
             updateChatsData(this.newChatsData, newChatData);
             await writeFile(this.newChatsData);
@@ -112,12 +116,17 @@ class AntiBot {
                 newUserData && newUserData.identifier ===
                 getIdentifier(ctx.from!.id)
             ) {
-                await verify(ctx, newUserData);
-                this.deleteUser(newChatData, newUserData);
-                updateChatsData(this.newChatsData, newChatData!);
-                await writeFile(this.newChatsData);
-                if (!!welcomeMsg) await ctx.deleteMessage(welcomeMsg.message_id);
-                return;
+                try {
+                    if (!!welcomeMsg) await ctx.deleteMessage(welcomeMsg.message_id);
+                    await verify(ctx, newUserData);
+                    this.deleteUser(newChatData, newUserData);
+                    updateChatsData(this.newChatsData, newChatData!);
+                    await writeFile(this.newChatsData);
+                    return;
+                } catch (TelegramError) {
+                    return;
+                }
+
             }
             await this.showAlert(ctx);
             return;
