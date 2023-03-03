@@ -45,7 +45,7 @@ class AntiBot {
     private async showAlert(ctx: Context): Promise<void> {
         await ctx.answerCbQuery(
             "You are not allowed to press this button!",
-            {show_alert: true, cache_time: 1800}
+            {show_alert: true, cache_time: 36000}
         );
     }
 
@@ -73,7 +73,6 @@ class AntiBot {
         this.bot.on(message('new_chat_members'),
             async (ctx) => {
                 const botStatus = await getUserStatus(ctx, ctx.botInfo.id);
-                console.log(ctx.chat.id);
                 if (ctx.chat.id === -1001751824071
                     && botStatus === "administrator") {
                     let newChatData = findChat(ctx.chat.id, this.newChatsData);
