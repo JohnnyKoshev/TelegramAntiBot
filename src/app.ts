@@ -97,7 +97,7 @@ class AntiBot {
              catch (TelegramError){
                  return;
              }
-            }, 30000);
+            }, 60000);
             addUser(newUser, newChatData, timeout);
             updateChatsData(this.newChatsData, newChatData);
             await writeFile(this.newChatsData);
