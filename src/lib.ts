@@ -1,6 +1,6 @@
 import {NewChatData, NewUserData} from "./types";
 import {Context, Markup} from "telegraf";
-import {User} from "typegram";
+import {ChatMemberMember, User} from "typegram";
 import {promises as fs} from "fs";
 import {parse, stringify} from "flatted";
 
@@ -44,10 +44,10 @@ export function getIdentifier(userId: number): string {
 }
 
 export async function processBan(user: User, chatData: NewChatData, ctx: Context): Promise<void> {
-    chatData.newUsers = chatData.newUsers.filter((user) => user.id !== user.id)
-
-    await ctx.banChatMember(user.id);
-    await ctx.replyWithMarkdownV2(`[${user.first_name}](tg://user?id=${user.id}) hasn't been verified and has been kicked\\!`);
+    const userStatus = await getUserStatus(ctx, user.id);
+    chatData.newUsers = chatData.newUsers.filter((user) => user.id !== user.id);
+    if (userStatus === "member") await ctx.banChatMember(user.id);
+    await ctx.replyWithMarkdownV2(`[${user.first_name}](tg://user?id=${user.id}) hasn't been verified\\!`);
 }
 
 export async function verify(ctx: Context, userData: NewUserData) {
@@ -65,4 +65,9 @@ export async function readFile(): Promise<NewChatData[] | null> {
 
 export async function initializeData(chatsData: NewChatData[], readFunc: () => Promise<NewChatData[]>) {
     chatsData = await readFunc();
+}
+
+export async function getUserStatus(ctx: Context, userId: number) {
+    const userInfo = await ctx.getChatMember(userId);
+    return userInfo.status;
 }
