@@ -29,10 +29,18 @@ export function updateChatsData(chatsData: NewChatData[] | null, chatData: NewCh
 }
 
 export async function sendWelcome(ctx: Context, user: User) {
-    return await ctx.replyWithMarkdownV2(`Welcome to the chat, [\\${user.first_name}](tg://user?id=${user.id}) \\! It is an anti\\-bot system\\. Please, verify yourself by pressing the button during *1 minute*, otherwise you will be *kicked*\\.`,
-        Markup.inlineKeyboard([
-            Markup.button.callback('Verify', "verification")
-        ]));
+    try {
+        return await ctx.replyWithMarkdownV2(`Welcome to the chat, [\\${user.first_name}](tg://user?id=${user.id}) \\! It is an anti\\-bot system\\. Please, verify yourself by pressing the button during *1 minute*, otherwise you will be *kicked*\\.`,
+            Markup.inlineKeyboard([
+                Markup.button.callback('Verify', "verification")
+            ]));
+    }
+    catch(e){
+        return await ctx.replyWithMarkdownV2(`Welcome to the chat, [Absolute Student](tg://user?id=${user.id}) \\! It is an anti\\-bot system\\. Please, verify yourself by pressing the button during *1 minute*, otherwise you will be *kicked*\\.`,
+            Markup.inlineKeyboard([
+                Markup.button.callback('Verify', "verification")
+            ]));
+    }
 }
 
 export function addChat(chatsData: NewChatData[] | null, chatId: number, latestMessageId: number): void {
@@ -47,12 +55,22 @@ export async function processBan(user: User, chatData: NewChatData, ctx: Context
     const userStatus = await getUserStatus(ctx, user.id);
     chatData.newUsers = chatData.newUsers.filter((user) => user.id !== user.id);
     if (userStatus === "member") await ctx.banChatMember(user.id);
-    await ctx.replyWithMarkdownV2(`[\\${user.first_name}](tg://user?id=${user.id}) hasn't been verified\\!`);
+    try {
+        await ctx.replyWithMarkdownV2(`[\\${user.first_name}](tg://user?id=${user.id}) hasn't been verified\\!`);
+    }
+    catch (e) {
+        await ctx.replyWithMarkdownV2(`[Absolute Student](tg://user?id=${user.id}) hasn't been verified\\!`);
+    }
 }
 
 export async function verify(ctx: Context, userData: NewUserData) {
+    try {
+        await ctx.replyWithMarkdownV2(`[\\${userData.first_name}](tg://user?id=${userData.id}) has been verified\\!`);
+    }
+    catch (e) {
+        await ctx.replyWithMarkdownV2(`[Absolute Student](tg://user?id=${userData.id}) has been verified\\!`);
+    }
     clearTimeout(userData.timeout);
-    await ctx.replyWithMarkdownV2(`[\\${userData.first_name}](tg://user?id=${userData.id}) has been verified\\!`);
 }
 
 export async function writeFile(chatsData: NewChatData[] | null) {
