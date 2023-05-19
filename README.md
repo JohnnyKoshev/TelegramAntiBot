@@ -42,6 +42,8 @@ This is a Telegram bot project that implements an anti-bot system for group chat
    ```
 
    Replace `your_bot_token` with your Telegram Bot API token.
+
+5. Change `ctx.chat.id === your_group_id` in the if conditional of the `handleUserJoin()` function in `app.ts`. This way you can adjust the bot to work only for your group, or you can delete this condition from the if statement so that it will work for any group.
  
 5. Build:
 
@@ -70,7 +72,7 @@ This is a Telegram bot project that implements an anti-bot system for group chat
 You can modify the behavior of the bot by editing the source files and adjusting the code as needed. Some possible customizations include:
 
 - Modifying the welcome message content in `lib.ts`.
-- Changing the verification time limit in milliseconds in `AntiBot.ts`.
+- Changing the verification time limit in milliseconds in `app.ts`.
 - Adding additional actions to be performed when a user is kicked or verified.
 
 ## Contributing
