@@ -43,13 +43,13 @@ This is a Telegram bot project that implements an anti-bot system for group chat
 
    Replace `your_bot_token` with your Telegram Bot API token.
  
-4. Build:
+5. Build:
 
-```bash
-npm run build
-```
+   ```bash
+   npm run build
+   ```
 
-5. Start the bot:
+6. Start the bot:
 
    ```bash
    npm start
