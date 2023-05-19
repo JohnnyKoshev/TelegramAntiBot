@@ -20,13 +20,13 @@ This is a Telegram bot project that implements an anti-bot system for group chat
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/telegram-bot-anti-bot.git
+   git clone https://github.com/JohnnyKoshev/TelegramAntiBot.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd telegram-bot-anti-bot
+   cd TelegramAntiBot
    ```
 
 3. Install the dependencies:
